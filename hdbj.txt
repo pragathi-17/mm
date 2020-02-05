@@ -1,0 +1,10 @@
+db.pms_university_exam.aggregate([
+    {"$match":{"academicYear" :"2016-17","deptId" :"IS"}},
+    {"$unwind":"$terms"},
+    {"$match":{"terms.termNumber":"6"}},
+    {"$unwind":"$terms.scores"},
+    {"$match":{"terms.scores.usn":"4MT14IS009"}},
+    {"$project":{"course":"$terms.scores.courseScores"}},
+    {"$unwind":"$course"},
+    {"$project":{"courseName":"$course.courseName","ueScore":"$course.ueScore","maxUeScore":"$course.maxUeScore","totalScore":"$course.totalScore","_id":0}}
+    ])
